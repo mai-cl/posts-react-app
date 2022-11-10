@@ -1,9 +1,10 @@
 import React from "react";
+import Page from "./Page";
 
 function About() {
   return (
-    <div className="container container--narrow py-md-5">
-      <h2>About Us</h2>
+    <Page title="About Us">
+      <h2>About Us!</h2>
       <p className="lead text-muted">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
         dolorum labore quisquam vel id dicta fuga! Ducimus, quo. Dolore commodi
@@ -24,7 +25,7 @@ function About() {
         nobis provident quo dolorum sapiente temporibus facere non repellendus
         consequatur cupiditate!
       </p>
-    </div>
+    </Page>
   );
 }
 
