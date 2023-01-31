@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import StateContext from "../StateContext";
 import HeaderLoggedIn from "./HeaderLoggedIn";
 import HeaderLoggedOut from "./HeaderLoggedOut";
 
-function Header({ loggedIn, setLoggedIn }) {
+function Header() {
+  const appState = useContext(StateContext);
+
   return (
     <header className="header-bar bg-primary mb-3">
       <div className="container d-flex flex-column flex-md-row align-items-center p-3">
@@ -13,11 +16,7 @@ function Header({ loggedIn, setLoggedIn }) {
             PostsApp{" "}
           </Link>
         </h4>
-        {loggedIn ? (
-          <HeaderLoggedIn setLoggedIn={setLoggedIn} />
-        ) : (
-          <HeaderLoggedOut setLoggedIn={setLoggedIn} />
-        )}
+        {appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
       </div>
     </header>
   );

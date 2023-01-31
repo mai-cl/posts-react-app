@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
 
-const HeaderLoggedIn = ({ setLoggedIn }) => {
+const HeaderLoggedIn = () => {
+  const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
+
   function handleLogout() {
-    setLoggedIn(false);
-    localStorage.removeItem("postsappUsername");
-    localStorage.removeItem("postsappAvatar");
-    localStorage.removeItem("postsappToken");
+    appDispatch({ type: "logout" });
   }
 
   return (
@@ -18,12 +20,9 @@ const HeaderLoggedIn = ({ setLoggedIn }) => {
         <i className="fas fa-comment"></i>
         <span className="chat-count-badge text-white"> </span>
       </span>
-      <a href="#" className="mr-2">
-        <img
-          className="small-header-avatar"
-          src={localStorage.getItem("postsappAvatar")}
-        />
-      </a>
+      <Link to={`/profile/${appState.user.username}`} className="mr-2">
+        <img className="small-header-avatar" src={appState.user.avatar} />
+      </Link>
       <Link className="btn btn-sm btn-success mr-2" to="/create-post">
         Create Post
       </Link>

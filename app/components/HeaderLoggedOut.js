@@ -1,9 +1,11 @@
 import Axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import DispatchContext from "../DispatchContext";
 
-const HeaderLoggedOut = ({ setLoggedIn }) => {
+const HeaderLoggedOut = () => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const appDispatch = useContext(DispatchContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -14,10 +16,7 @@ const HeaderLoggedOut = ({ setLoggedIn }) => {
       });
       if (response.data) {
         console.log(response.data);
-        localStorage.setItem("postsappUsername", response.data.username);
-        localStorage.setItem("postsappAvatar", response.data.avatar);
-        localStorage.setItem("postsappToken", response.data.token);
-        setLoggedIn(true);
+        appDispatch({ type: "login", data: response.data });
       } else {
         console.log("Incorrect username / password");
       }

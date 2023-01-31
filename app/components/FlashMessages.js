@@ -1,9 +1,9 @@
 import React from "react";
 
-const FlashMessages = ({ flashMessages }) => {
+const FlashMessages = ({ messages }) => {
   return (
     <div className="floating-alerts">
-      {flashMessages.map((msg, index) => (
+      {messages.map((msg, index) => (
         <div
           className="alert alert-success text-center floating-alert shadow-sm"
           key={index}
