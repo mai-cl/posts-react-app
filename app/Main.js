@@ -19,6 +19,8 @@ import Profile from "./components/Profile";
 
 import DispatchContext from "./DispatchContext";
 import StateContext from "./StateContext";
+import EditPost from "./components/EditPost";
+import NotFound from "./components/NotFound";
 
 function Main() {
   const initialState = {
@@ -78,8 +80,10 @@ function Main() {
             />
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/post/:id" element={<ViewSinglePost />} />
+            <Route path="/post/:id/edit" element={<EditPost />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </BrowserRouter>
