@@ -1,11 +1,10 @@
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import LoadingDotsIcon from "./LoadingDotsIcon";
-import Post from "./Post";
 
-const ProfilePosts = () => {
-  const [posts, setPosts] = useState([]);
+const ProfileFollow = ({ action }) => {
+  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { username } = useParams();
 
@@ -14,11 +13,11 @@ const ProfilePosts = () => {
 
     (async function () {
       try {
-        const response = await Axios.get(`/profile/${username}/posts`, {
+        const response = await Axios.get(`/profile/${username}/${action}`, {
           cancelToken: request.token,
         });
         setIsLoading(false);
-        setPosts(response.data);
+        setUsers(response.data);
       } catch (error) {
         console.log("There was an error or the request was cancelled.");
       }
@@ -33,11 +32,20 @@ const ProfilePosts = () => {
 
   return (
     <div className="list-group">
-      {posts.map((post) => {
-        return <Post isOwner={true} post={post} key={post._id} />;
+      {users.map((user, index) => {
+        return (
+          <Link
+            to={`/profile/${user.username}`}
+            className="list-group-item list-group-item-action"
+            key={index}
+          >
+            <img className="avatar-tiny" src={user.avatar} />
+            {user.username}
+          </Link>
+        );
       })}
     </div>
   );
 };
 
-export default ProfilePosts;
+export default ProfileFollow;

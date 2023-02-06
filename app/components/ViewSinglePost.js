@@ -43,7 +43,7 @@ function ViewSinglePost() {
     return () => {
       request.cancel();
     };
-  }, []);
+  }, [id]);
 
   function isOwner() {
     return appState.loggedIn && appState.user.username == post.author.username;
