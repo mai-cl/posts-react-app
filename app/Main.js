@@ -23,6 +23,7 @@ import Search from "./components/Search";
 
 import DispatchContext from "./DispatchContext";
 import StateContext from "./StateContext";
+import Chat from "./components/Chat";
 
 function Main() {
   const initialState = {
@@ -34,6 +35,8 @@ function Main() {
       token: localStorage.getItem("postsappToken"),
     },
     isSearchOpen: false,
+    isChatOpen: false,
+    unreadChatCount: 0,
   };
 
   const ourReducer = (draft, action) => {
@@ -55,6 +58,18 @@ function Main() {
         return;
       case "closeSearch":
         draft.isSearchOpen = false;
+        return;
+      case "toggleChat":
+        draft.isChatOpen = !draft.isChatOpen;
+        return;
+      case "closeChat":
+        draft.isChatOpen = false;
+        return;
+      case "incrementUnreadChatCount":
+        draft.unreadChatCount++;
+        return;
+      case "clearUnreadChatCount":
+        draft.unreadChatCount = 0;
         return;
       default:
         return draft;
@@ -102,6 +117,7 @@ function Main() {
           >
             <Search />
           </CSSTransition>
+          <Chat />
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>
