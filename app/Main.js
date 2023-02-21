@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useImmerReducer } from "use-immer";
 import { CSSTransition } from "react-transition-group";
 import Axios from "axios";
-Axios.defaults.baseURL = "http://localhost:8080";
+Axios.defaults.baseURL =
+  process.env.BACKENDURL || "https://posts-backend.onrender.com";
 
 // Components
 import Header from "./components/Header";
@@ -15,16 +16,19 @@ import Terms from "./components/Terms";
 import Home from "./components/Home";
 //import CreatePost from "./components/CreatePost";
 const CreatePost = lazy(() => import("./components/CreatePost"));
-import ViewSinglePost from "./components/ViewSinglePost";
+//import ViewSinglePost from "./components/ViewSinglePost";
+const ViewSinglePost = lazy(() => import("./components/ViewSinglePost"));
 import FlashMessages from "./components/FlashMessages";
 import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
 import NotFound from "./components/NotFound";
-import Search from "./components/Search";
+//import Search from "./components/Search";
+const Search = lazy(() => import("./components/Search"));
 
 import DispatchContext from "./DispatchContext";
 import StateContext from "./StateContext";
-import Chat from "./components/Chat";
+//import Chat from "./components/Chat";
+const Chat = lazy(() => import("./components/Chat"));
 import LoadingDotsIcon from "./components/LoadingDotsIcon";
 
 function Main() {
@@ -147,9 +151,14 @@ function Main() {
             classNames="search-overlay"
             unmountOnExit
           >
-            <Search />
+            <div className="search-overlay">
+              <Suspense fallback="">
+                <Search />
+              </Suspense>
+            </div>
           </CSSTransition>
-          <Chat />
+          <Suspense fallback="">{state.loggedIn && <Chat />}</Suspense>
+
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>

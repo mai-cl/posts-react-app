@@ -6,11 +6,10 @@ import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
 import { Link } from "react-router-dom";
 
-const socket = io("http://localhost:8080");
-
 const Chat = () => {
   const appState = useContext(StateContext);
   const appDispatch = useContext(DispatchContext);
+  const socket = useRef(null);
   const chatField = useRef(null);
   const chatLog = useRef(null);
   const [state, setState] = useImmer({
@@ -26,11 +25,16 @@ const Chat = () => {
   }, [appState.isChatOpen]);
 
   useEffect(() => {
-    socket.on("chatFromServer", (message) => {
+    socket.current = io(
+      process.env.BACKENDURL || "https://posts-backend.onrender.com"
+    );
+
+    socket.current.on("chatFromServer", (message) => {
       setState((draft) => {
         draft.chatMessages.push(message);
       });
     });
+    return () => socket.current.disconnect();
   }, []);
 
   useEffect(() => {
@@ -50,7 +54,7 @@ const Chat = () => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    socket.emit("chatFromBrowser", {
+    socket.current.emit("chatFromBrowser", {
       message: state.fieldValue,
       token: appState.user.token,
     });
